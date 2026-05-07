@@ -140,31 +140,6 @@ class Raft():
 
                     hora = datetime.now().strftime("%H:%M:%S.%f")[:-3]
                     print(f' | {hora} | Process {self._id} PERDER ELEIÇÃO')
-                
-    @Pyro5.api.expose
-    def ping(self):
-        return True
-
-def wait_all_process():
-    while True:
-        connected = 0
-
-        for uri in list_uri:
-            try:
-                proxy = Pyro5.api.Proxy(uri)
-                proxy.ping()
-
-                connected += 1
-
-            except:
-                pass
-
-        if connected == len(list_uri):
-            print("Todos os processos online")
-            break
-
-        print(f"Aguardando processos... {connected}/{len(list_uri)}")
-        time.sleep(1)
 
 
 n_process = int(input("nº do processo: "))
@@ -176,9 +151,6 @@ uri = daemon.register(objeto_process, objectId=f"process{n_process}")
 
 
 print('uri: ', uri)
-
-# wait_all_process()
-
 
 if n_process > 2:
     print('Processo iniciado \n\n')
